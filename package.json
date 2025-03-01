@@ -1,0 +1,24 @@
+{
+  "name": "booking-app",
+  "version": "1.0.0",
+  "description": "A simple Node.js & Express booking system with MongoDB, allowing users to schedule appointments and manage reservations.",
+  "homepage": "https://github.com/FatlumG/Booking-App#readme",
+  "bugs": {
+    "url": "https://github.com/FatlumG/Booking-App/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FatlumG/Booking-App.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
