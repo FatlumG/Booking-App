@@ -99,3 +99,32 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ status: "fail", error: error.message });
   }
 };
+
+export const getWaiters = async (req, res) => {
+  try {
+    const waiters = await User.find({ role: "waiter" });
+
+    if (!waiters) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "There are no waiters found!" });
+    }
+    res.status(200).json({ status: "success", data: waiters });
+  } catch (error) {
+    res.status(500).json({ status: "fail", error: error.message });
+  }
+};
+export const getClients = async (req, res) => {
+  try {
+    const clients = await User.find({ role: "user" });
+
+    if (!clients) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "There are no users found!" });
+    }
+    res.status(200).json({ status: "success", data: clients });
+  } catch (error) {
+    res.status(500).json({ status: "fail", error: error.message });
+  }
+};
