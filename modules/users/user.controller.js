@@ -55,7 +55,7 @@ export const updateUser = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) {
       return res
-        .status(500)
+        .status(404)
         .json({ status: "fail", error: "User id not found" });
     }
 
