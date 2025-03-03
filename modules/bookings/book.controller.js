@@ -5,7 +5,9 @@ export const getAllBookings = async (req, res) => {
     const bookings = await Book.find()
       .populate("clientId", "name email")
       .populate("menuId", "name price");
-    res.status(200).json({ status: "success", data: bookings });
+    res
+      .status(200)
+      .json({ status: "success", result: bookings.length, data: { bookings } });
   } catch (error) {
     res.status(404).json({ status: "fail", error: error.message });
   }
@@ -18,7 +20,7 @@ export const getOneBooking = async (req, res) => {
       .populate("clientId", "name email")
       .populate("menuId", "name price");
 
-    res.status(200).json({ status: "success", data: book });
+    res.status(200).json({ status: "success", data: { book } });
   } catch (error) {
     res.status(404).json({ status: "fail", error: error.message });
   }
@@ -38,7 +40,7 @@ export const createBooking = async (req, res) => {
     });
 
     await newBook.save();
-    res.status(201).json({ status: "success", data: newBook });
+    res.status(201).json({ status: "success", data: { newBook } });
   } catch (error) {
     res.status(400).json({ status: "fail", error: error.message });
   }
@@ -70,7 +72,7 @@ export const updateBooking = async (req, res) => {
     }
 
     await book.save();
-    res.status(200).json({ status: "success", data: book });
+    res.status(200).json({ status: "success", data: { book } });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }

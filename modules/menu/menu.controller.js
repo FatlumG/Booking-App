@@ -3,7 +3,9 @@ import Menu from "./menu.model.js";
 export const getAllMenus = async (req, res) => {
   try {
     const menus = await Menu.find().sort({ createdAt: -1 });
-    res.status(200).json({ status: "success", data: menus });
+    res
+      .status(200)
+      .json({ status: "success", result: menus.length, data: { menus } });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }
@@ -17,7 +19,7 @@ export const getMenu = async (req, res) => {
         .status(404)
         .json({ status: "fail", message: "Menu not found" });
     }
-    res.status(200).json({ status: "success", data: menu });
+    res.status(200).json({ status: "success", data: { menu } });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }
@@ -28,13 +30,11 @@ export const createMenu = async (req, res) => {
     const { name, description, price, category } = req.body;
     const menu = new Menu({ name, description, price, category });
     await menu.save();
-    res
-      .status(201)
-      .json({
-        status: "success",
-        message: "Menu item created successfully!",
-        data: menu,
-      });
+    res.status(201).json({
+      status: "success",
+      message: "Menu item created successfully!",
+      data: { menu },
+    });
   } catch (error) {
     res.status(400).json({ status: "fail", error: error.message });
   }
@@ -51,13 +51,11 @@ export const updateMenu = async (req, res) => {
         .status(404)
         .json({ status: "fail", message: "Menu not found" });
     }
-    res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Menu item updated successfully!",
-        data: menu,
-      });
+    res.status(200).json({
+      status: "success",
+      message: "Menu item updated successfully!",
+      data: { menu },
+    });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }

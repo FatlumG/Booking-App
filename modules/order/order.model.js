@@ -5,7 +5,7 @@ const orderSchema = new mongoose.Schema(
     clientId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "User"
+      ref: "User",
     },
     bookingId: { type: mongoose.Schema.Types.ObjectId, ref: "Booking" },
     orderItems: [
@@ -13,19 +13,19 @@ const orderSchema = new mongoose.Schema(
         productId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
-          required: true
+          required: true,
         },
         quantity: {
           type: Number,
           required: true,
-          min: 1
+          min: 1,
         },
         price: {
           type: Number,
           required: true,
-          min: 0
-        }
-      }
+          min: 0,
+        },
+      },
     ],
     totalPrice: { type: Number, required: true, min: 0 },
     status: {
@@ -37,13 +37,13 @@ const orderSchema = new mongoose.Schema(
         "processing",
         "shipped",
         "delivered",
-        "cancelled"
+        "cancelled",
       ],
-      default: "pending"
-    }
+      default: "pending",
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

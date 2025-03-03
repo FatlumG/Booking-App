@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
-    res.status(200).json(users);
+    res
+      .status(200)
+      .json({ status: "success", result: users.length, data: { users } });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }
@@ -14,7 +16,7 @@ export const getUser = async (req, res) => {
   try {
     const UserId = req.params.id;
     const user = await User.findById(UserId);
-    res.status(200).json({ status: "success", data: user });
+    res.status(200).json({ status: "success", data: { user } });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }
@@ -39,7 +41,7 @@ export const createUser = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "User created successfully!",
-      data: user,
+      data: { user },
     });
   } catch (error) {
     res.status(400).json({ status: "fail", error: error });
@@ -81,7 +83,7 @@ export const updateUser = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "User updated successfully!",
-      data: user,
+      data: { user },
     });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
@@ -109,7 +111,9 @@ export const getWaiters = async (req, res) => {
         .status(404)
         .json({ status: "fail", message: "There are no waiters found!" });
     }
-    res.status(200).json({ status: "success", data: waiters });
+    res
+      .status(200)
+      .json({ status: "success", result: waiters.length, data: { waiters } });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }
@@ -123,7 +127,9 @@ export const getClients = async (req, res) => {
         .status(404)
         .json({ status: "fail", message: "There are no users found!" });
     }
-    res.status(200).json({ status: "success", data: clients });
+    res
+      .status(200)
+      .json({ status: "success", result: clients.length, data: { clients } });
   } catch (error) {
     res.status(500).json({ status: "fail", error: error.message });
   }
