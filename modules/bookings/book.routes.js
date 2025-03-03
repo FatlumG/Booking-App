@@ -5,7 +5,7 @@ import {
   createBooking,
   updateBooking,
   deleteBooking,
-} from "./book.controller";
+} from "./book.controller.js";
 
 const router = express.Router();
 
@@ -13,5 +13,7 @@ router.route("/").get(getAllBookings).post(createBooking);
 router
   .route("/:id")
   .get(getOneBooking)
-  .put(updateBooking)
+  .patch(updateBooking)
   .delete(deleteBooking);
+
+export default router;

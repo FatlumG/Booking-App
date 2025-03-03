@@ -18,8 +18,11 @@ const bookSchema = new mongoose.Schema(
       default: "pending",
     },
     bookingDate: {
-      type: Date,
-      default: Date.now,
+      type: String,
+      required: true,
+    },
+    bookingHour: {
+      type: String,
       required: true,
     },
   },
@@ -28,6 +31,6 @@ const bookSchema = new mongoose.Schema(
   }
 );
 
-const Book = mongoose.Model("Book", bookSchema);
+const Book = mongoose.model("Book", bookSchema);
 
 export default Book;

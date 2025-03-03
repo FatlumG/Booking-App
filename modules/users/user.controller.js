@@ -42,7 +42,7 @@ export const createUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    res.status(400).json({ status: "fail", error: error.message });
+    res.status(400).json({ status: "fail", error: error });
   }
 };
 
