@@ -6,7 +6,7 @@ import menuRoutes from "../modules/menu/menu.routes.js";
 const router = express.Router();
 
 router.use("/users", userRoutes);
-router.use("/orders", userRoutes);
-router.use("/menu", menuRoutes);
+router.use("/orders", orderRoutes);
+router.use("/menus", menuRoutes);
 
 export default router;

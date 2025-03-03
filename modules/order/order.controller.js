@@ -13,7 +13,7 @@ export const createOrder = async (req, res) => {
       bookingId,
       orderItems,
       totalPrice,
-      status: "pending"
+      status: "pending",
     });
 
     const createdOrder = await order.save();
@@ -28,7 +28,7 @@ export const getAllOrders = async (req, res) => {
     const orders = await Order.find({})
       .populate("clientId", "name email")
       .populate("orderItems.productId", "name price");
-    res.json(orders);
+    res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -44,7 +44,7 @@ export const getOrderById = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    res.json(order);
+    res.status(200).json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -63,7 +63,7 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    res.json(order);
+    res.status(200).json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
