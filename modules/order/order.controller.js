@@ -1,10 +1,13 @@
 import Order from "./order.model.js";
+import mongoose from "mongoose";
 
 export const createOrder = async (req, res) => {
   try {
-    const { clientId, bookingId, orderItems, totalPrice, status } = req.body;
+    console.log(req.body);
 
-    if (!clientId || !orderItems || !totalPrice) {
+    const { clientId, bookingId, orderItems } = req.body;
+
+    if (!clientId || !orderItems) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
@@ -12,23 +15,95 @@ export const createOrder = async (req, res) => {
       clientId,
       bookingId,
       orderItems,
-      totalPrice,
       status: "pending",
     });
 
     const createdOrder = await order.save();
-    res.status(201).json(createdOrder);
+    res.status(201).json({
+      status: "success",
+      message: "Order created successfully!",
+      data: { createdOrder },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// export const getAllOrders = async (req, res) => {
+//   try {
+//     const orders = await Order.find({})
+//       .populate("clientId", "name email")
+//       .populate("orderItems.productId", "name price");
+
+//     const orderTotalPrice = await Order.aggregate([
+//       {
+//         $match: { clientId: new mongoose.Types.ObjectId(clientId) },
+//       },
+//       {
+//         $unwind: "$orderItems",
+//       },
+//       {
+//         $lookup: {
+//           from: "menus",
+//           localField: "$orderItems.productId",
+//           foreignField: "_id",
+//           as: "productDetails",
+//         },
+//       },
+//       {
+//         $unwind: "$productDetails",
+//       },
+//       {
+//         $group: {
+//           _id: "$_id",
+//           totalPrice: { $sum: "$productDetails.price" },
+//           orderItems: { $push: "$orderItems" },
+//           clientId: { $first: "$clientId" },
+//           status: { $first: "$status" },
+//         },
+//       },
+//     ]);
+//     res.status(200).json({ status: "success", data: { orders } });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find({})
-      .populate("clientId", "name email")
-      .populate("orderItems.productId", "name price");
-    res.status(200).json(orders);
+    const orders = await Order.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "clientId",
+          foreignField: "_id",
+          as: "clientDetails",
+        },
+      },
+      { $unwind: "$clientDetails" },
+      {
+        $lookup: {
+          from: "menus",
+          localField: "orderItems.productId",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$orderItems" },
+      { $unwind: "$productDetails" },
+      {
+        $group: {
+          _id: "$_id",
+          clientId: { $first: "$clientId" },
+          firstName: { $first: "$clientDetails.firstName" },
+          lastName: { $first: "$clientDetails.lastName" },
+          orderItems: { $push: "$orderItems" },
+          totalPrice: { $sum: "$productDetails.price" },
+          status: { $first: "$status" },
+        },
+      },
+    ]);
+
+    res.status(200).json({ status: "success", data: orders });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -44,7 +119,7 @@ export const getOrderById = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    res.status(200).json(order);
+    res.status(200).json({ status: "success", data: { order } });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -63,7 +138,11 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    res.status(200).json(order);
+    res.status(200).json({
+      status: "success",
+      message: "Order status updated successfully!",
+      data: { order },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -77,7 +156,7 @@ export const deleteOrder = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    res.json({ message: "Order removed" });
+    res.json({ message: "Order removed successfully!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

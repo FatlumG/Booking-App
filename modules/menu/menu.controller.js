@@ -32,7 +32,7 @@ export const createMenu = async (req, res) => {
     await menu.save();
     res.status(201).json({
       status: "success",
-      message: "Menu item created successfully!",
+      message: "Menu created successfully!",
       data: { menu },
     });
   } catch (error) {

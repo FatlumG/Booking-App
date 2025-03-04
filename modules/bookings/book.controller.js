@@ -40,7 +40,13 @@ export const createBooking = async (req, res) => {
     });
 
     await newBook.save();
-    res.status(201).json({ status: "success", data: { newBook } });
+    res
+      .status(201)
+      .json({
+        status: "success",
+        message: "Booking created successfully!",
+        data: { newBook },
+      });
   } catch (error) {
     res.status(400).json({ status: "fail", error: error.message });
   }
